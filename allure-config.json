@@ -1,0 +1,37 @@
+{
+  "allure": {
+    "directory": "allure-results",
+    "links": {
+      "issue": {
+        "pattern": "https://yourcompany.atlassian.net/browse/{}",
+        "linkText": "ISSUE-{}"
+      },
+      "tms": {
+        "pattern": "https://yourcompany.testrail.com/index.php?/cases/view/{}",
+        "linkText": "TestCase-{}"
+      }
+    },
+    "branding": {
+      "dark": false,
+      "title": "Mobile Test Framework - iOS Tests",
+      "slogan": "iOS Cucumber Tests with Appium"
+    },
+    "categories": [
+      {
+        "name": "iOS Specific Issues",
+        "messageRegex": ".*simulator.*|.*XCUITest.*",
+        "matchedStatuses": ["broken", "failed"]
+      },
+      {
+        "name": "Appium Connection Issues",
+        "messageRegex": ".*Failed to create session.*",
+        "matchedStatuses": ["broken"]
+      },
+      {
+        "name": "Test Failures",
+        "messageRegex": ".*",
+        "matchedStatuses": ["failed"]
+      }
+    ]
+  }
+}

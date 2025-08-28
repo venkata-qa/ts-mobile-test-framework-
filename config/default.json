@@ -1,0 +1,22 @@
+{
+  "android": {
+    "platform": "android",
+    "appiumUrl": "http://localhost:4723",
+    "deviceName": "emulator-5554",
+    "platformVersion": "12.0",
+    "appPath": "/Users/venkorip5/Documents/vk-fws/bupa-blua-mobile-testx-e2e-testing/ts-mobile-test-framework/src/test/resources/app/Android.SauceLabs.Mobile.Sample.app.2.7.1.apk",
+    "noReset": false,
+    "implicitTimeout": 10000,
+    "explicitTimeout": 30000
+  },
+  "ios": {
+    "platform": "ios",
+    "appiumUrl": "http://localhost:4723",
+    "deviceName": "iPhone 13",
+    "platformVersion": "18.6",
+    "appPath": "/Users/venkorip5/Documents/vk-fws/bupa-blua-mobile-testx-e2e-testing/ts-mobile-test-framework/src/test/resources/app/iOS.Simulator.SauceLabs.Mobile.Sample.app.2.7.1.app",
+    "noReset": false,
+    "implicitTimeout": 10000,
+    "explicitTimeout": 30000
+  }
+}

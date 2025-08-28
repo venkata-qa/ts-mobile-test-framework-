@@ -1,0 +1,34 @@
+{
+  "platform": "ios",
+  "appiumUrl": "http://localhost:4723",
+  "implicitTimeout": 10000,
+  "explicitTimeout": 30000,
+  "noReset": false,
+  "android": {
+    "appiumUrl": "http://localhost:4723",
+    "deviceName": "Pixel 3",
+    "platformVersion": "16",
+    "appPath": "/Users/venkorip5/Documents/vk-fws/bupa-blua-mobile-testx-e2e-testing/ts-mobile-test-framework/src/test/resources/app/Android.SauceLabs.Mobile.Sample.app.2.7.1.apk",
+    "noReset": false,
+    "implicitTimeout": 10000,
+    "explicitTimeout": 30000,
+    "appActivity": "com.swaglabsmobileapp.MainActivity",
+    "appPackage": "com.swaglabsmobileapp"
+  },
+  "ios": {
+    "appiumUrl": "http://localhost:4723",
+    "deviceName": "iPhone 16 Plus",
+    "udid": "A58EC5DC-3655-4B83-9C01-B0EC598E6A91",
+    "platformVersion": "18.6",
+    "appPath": "/Users/venkorip5/Documents/vk-fws/bupa-blua-mobile-testx-e2e-testing/ts-mobile-test-framework/src/test/resources/app/iOS.Simulator.SauceLabs.Mobile.Sample.app.2.7.1.app",
+    "noReset": false,
+    "implicitTimeout": 10000,
+    "explicitTimeout": 30000,
+    "automationName": "XCUITest",
+    "bundleId": "com.saucelabs.SwagLabsMobileApp",
+    "useNewWDA": true,
+    "usePrebuiltWDA": false,
+    "connectHardwareKeyboard": true,
+    "wdaLocalPort": 8100
+  }
+}
