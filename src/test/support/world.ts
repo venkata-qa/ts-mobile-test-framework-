@@ -37,7 +37,39 @@ export class TestWorld extends World {
   ): Promise<void> {
     try {
       this.logger.info(`Initializing mobile driver for ${platform || 'default platform'}`);
-      this.driver = await this.driverFactory.createDriver(platform, capabilities);
+      
+      // Check if we're running on BrowserStack
+      const isBrowserStack = process.env.ENV === 'browserstack';
+      
+      if (isBrowserStack) {
+        this.logger.info('Using BrowserStack configuration');
+        
+        // Get BrowserStack app ID from environment variables
+        const appId = process.env.BROWSERSTACK_APP_ID;
+        
+        // Set proper BrowserStack capabilities
+        const bsCapabilities = {
+          'platformName': platform === 'ios' ? 'iOS' : 'Android',
+          'appium:deviceName': process.env.DEVICE_NAME || (platform === 'ios' ? 'iPhone 14' : 'Google Pixel 7'),
+          'appium:platformVersion': process.env.PLATFORM_VERSION || (platform === 'ios' ? '16' : '13.0'),
+          'appium:app': appId,
+          'bstack:options': {
+            'userName': process.env.BROWSERSTACK_USERNAME,
+            'accessKey': process.env.BROWSERSTACK_ACCESS_KEY,
+            'projectName': 'Mobile Test Framework',
+            'buildName': 'Mobile Tests ' + new Date().toISOString(),
+            'sessionName': `${platform} Test`,
+            'debug': true,
+            'networkLogs': true
+          }
+        };
+        
+        this.driver = await this.driverFactory.createDriver(platform, bsCapabilities);
+      } else {
+        // Default local driver creation
+        this.driver = await this.driverFactory.createDriver(platform, capabilities);
+      }
+      
       this.logger.info('Mobile driver initialized successfully');
     } catch (error) {
       this.logger.error('Failed to initialize mobile driver', error);

@@ -11,10 +11,42 @@ A modern, comprehensive mobile and API testing framework built with TypeScript, 
 - **BDD Approach**: Cucumber integration for behavior-driven development
 - **TypeScript**: Type safety and modern JavaScript features
 - **Dependency Injection**: Clean architecture with TSyringe
-- **Reporting**: Allure reporting integration
-- **Cloud Integration**: Support for BrowserStack, SauceLabs and other cloud providers
+- **Simplified Scripts**: Streamlined test execution for both local and BrowserStack testing
+- **Cloud Integration**: Support for BrowserStack testing
 - **CI/CD Ready**: Designed for integration with CI/CD pipelines
 - **Parallel Execution**: Run tests in parallel for faster feedback
+
+## Quick Start
+
+### Prerequisites
+- Node.js (v16+)
+- npm (v7+)
+- Appium Server v2.x (for local testing)
+- Android SDK / Xcode (for local testing)
+- BrowserStack account (for cloud testing)
+
+### Installation
+```bash
+npm install
+```
+
+### Running Tests
+
+#### Local Android Tests
+```bash
+npm run test:android
+```
+
+#### Local iOS Tests
+```bash
+npm run test:ios
+```
+
+#### BrowserStack Tests
+```bash
+npm run test:android:browserstack
+npm run test:ios:browserstack
+```
 
 ## Project Structure
 
@@ -67,12 +99,38 @@ ts-mobile-test-framework/
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
-- NPM (v6 or higher)
-- For mobile testing:
-  - Appium Server (v2.0 or higher)
-  - Android SDK (for Android testing)
-  - Xcode (for iOS testing)
+1. Node.js 16+
+2. Appium 2.0+
+3. Xcode 14+ (for iOS testing)
+4. Android Studio (for Android testing)
+5. npm or yarn
+
+### Quick Start
+
+1. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+2. **Start Appium for local testing**
+   ```bash
+   npm run start:appium
+   ```
+
+3. **Run tests**
+   ```bash
+   # Android tests locally
+   npm run test:android
+   
+   # iOS tests locally
+   npm run test:ios
+   
+   # Android tests on BrowserStack
+   npm run test:android:browserstack
+   
+   # API tests
+   npm run test:api
+   ```
 
 ### Installation
 

@@ -2,7 +2,7 @@
   "android": {
     "appiumUrl": "http://localhost:4723",
     "deviceName": "emulator-5554",
-    "platformVersion": "12.0",
+    "platformVersion": "16",
     "appPath": "/Users/venkorip5/Documents/vk-fws/bupa-blua-mobile-testx-e2e-testing/ts-mobile-test-framework/src/test/resources/app/Android.SauceLabs.Mobile.Sample.app.2.7.1.apk",
     "noReset": false,
     "implicitTimeout": 10000,

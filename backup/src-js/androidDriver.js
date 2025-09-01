@@ -170,7 +170,7 @@ var AndroidDriver = function () {
             var baseCapabilities = {
                 platformName: 'Android',
                 'appium:deviceName': this.configManager.get('deviceName', 'emulator-5554'),
-                'appium:platformVersion': this.configManager.get('platformVersion', '12.0'),
+                'appium:platformVersion': this.configManager.get('platformVersion', '16.0'),
                 'appium:automationName': 'UiAutomator2',
                 'appium:noReset': this.configManager.get('noReset', false),
                 'appium:newCommandTimeout': 180

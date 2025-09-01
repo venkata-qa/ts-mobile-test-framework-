@@ -53,11 +53,13 @@ Before({ tags: '@mobile and not @android and not @androiddemo and not @ios and n
 });
 
 /**
- * Run before each API scenario
- * Identifies API scenarios by the @api tag
+ * This API hook is being moved to apiHooks.ts for better separation of concerns
+ * The implementation in apiHooks.ts will override this one when both are loaded
+ * Keeping this commented version for reference
  */
-Before({ tags: '@api' }, async function(this: TestWorld) {
-  logger.info('Starting API scenario');
+// API hook moved to apiHooks.ts
+Before({ tags: '@api and not @mobile and not @android and not @ios' }, async function(this: TestWorld) {
+  logger.info('Starting API scenario (from generic hooks)');
   this.initApiClient();
 });
 

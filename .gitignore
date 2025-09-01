@@ -10,6 +10,9 @@ yarn-debug.log
 dist/
 build/
 *.tsbuildinfo
+# Ignore JavaScript files in src directory (should only be TypeScript source)
+src/**/*.js
+src/**/*.js.map
 
 # Appium logs
 appium.log

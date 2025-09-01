@@ -52,24 +52,49 @@ export class AndroidDriver {
         capabilities
       };
       
-      if (isCloud) {
-        this.configureCloudOptions(options);
+      // Try environment variable first
+      const envAppiumUrl = process.env.APPIUM_URL;
+      // Then try config
+      const configAppiumUrl = this.configManager.get<string>('appiumUrl');
+      // Fall back to default URL
+      const appiumUrl = envAppiumUrl || configAppiumUrl || 'http://localhost:4723';
+      
+      this.logger.info(`ENV APPIUM_URL: ${envAppiumUrl || 'not set'}`);
+      this.logger.info(`CONFIG appiumUrl: ${configAppiumUrl || 'not set'}`);
+      this.logger.info(`Using Appium URL: ${appiumUrl}`);
+      
+      // Check if we're using BrowserStack
+      const isBrowserStack = appiumUrl.includes('browserstack');
+      
+      if (isBrowserStack) {
+        // For BrowserStack, we need to parse the URL differently
+        const bsUrl = new URL(appiumUrl);
+        
+        // Set BrowserStack specific options
+        options.hostname = bsUrl.hostname;
+        options.port = 443;
+        options.path = '/wd/hub';
+        
+        // Extract username and key from URL if they exist
+        if (bsUrl.username && bsUrl.password) {
+          options.user = bsUrl.username;
+          options.key = bsUrl.password;
+        }
+        
+        this.logger.info('Using BrowserStack configuration');
       } else {
-        // Try environment variable first
-        const envAppiumUrl = process.env.APPIUM_URL;
-        // Then try config
-        const configAppiumUrl = this.configManager.get<string>('appiumUrl');
-        // Fall back to default URL
-        const appiumUrl = envAppiumUrl || configAppiumUrl || 'http://localhost:4723';
-        
-        this.logger.info(`ENV APPIUM_URL: ${envAppiumUrl || 'not set'}`);
-        this.logger.info(`CONFIG appiumUrl: ${configAppiumUrl || 'not set'}`);
-        this.logger.info(`Using Appium URL: ${appiumUrl}`);
-        
-        const url = new URL(appiumUrl);
-        options.hostname = url.hostname;
-        options.port = parseInt(url.port, 10);
-        options.path = '/'; // Changed from '/wd/hub' to '/' for Appium 3.x
+        // Local Appium server
+        try {
+          const url = new URL(appiumUrl);
+          options.hostname = url.hostname;
+          options.port = parseInt(url.port, 10) || 4723;
+          options.path = '/wd/hub';
+        } catch (error) {
+          this.logger.error(`Invalid Appium URL: ${appiumUrl}. Using default.`);
+          options.hostname = 'localhost';
+          options.port = 4723;
+          options.path = '/wd/hub';
+        }
       }
       
       this.logger.info('Initializing Android driver with capabilities:', capabilities);

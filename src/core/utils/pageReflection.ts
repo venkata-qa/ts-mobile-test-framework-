@@ -20,12 +20,32 @@ export class PageReflection {
     try {
       // Check cache first
       if (!PageReflection.pageObjectsCache[pageClassName]) {
-        // Dynamic import of the page class
-        // This works because the TS compiler will generate the appropriate code 
-        // when building for different module systems
+        // Use a more direct approach with require instead of import
         try {
-          const pageModule = await import(`../../../ui/pageObjects/${pageClassName}`);
-          PageReflection.pageObjectsCache[pageClassName] = pageModule;
+          // Try different paths since the import is failing
+          const paths = [
+            `../../../ui/pageObjects/${pageClassName}`,
+            `../../ui/pageObjects/${pageClassName}`,
+            `../ui/pageObjects/${pageClassName}`
+          ];
+          
+          let pageModule = null;
+          for (const path of paths) {
+            try {
+              // Use dynamic import for compatibility
+              pageModule = await import(path);
+              PageReflection.logger.info(`Successfully loaded ${pageClassName} from path: ${path}`);
+              break;
+            } catch (e) {
+              PageReflection.logger.debug(`Failed to load from path: ${path}`);
+            }
+          }
+          
+          if (pageModule) {
+            PageReflection.pageObjectsCache[pageClassName] = pageModule;
+          } else {
+            throw new Error(`Could not find module in any path`);
+          }
         } catch (error) {
           PageReflection.logger.error(`Failed to import page object class: ${pageClassName}`, error);
           throw new Error(`Page class not found: ${pageClassName}`);
@@ -65,6 +85,14 @@ export class PageReflection {
       // Check if it's a direct property
       if (elementName in pageObject) {
         return pageObject[elementName];
+      }
+      
+      // Check if there's an elements property (common pattern for page objects)
+      if (typeof pageObject.elements === 'function' || typeof pageObject.elements === 'object') {
+        const elements = typeof pageObject.elements === 'function' ? pageObject.elements() : pageObject.elements;
+        if (elements && elementName in elements) {
+          return elements[elementName];
+        }
       }
       
       // Try to get via a getter method if it exists

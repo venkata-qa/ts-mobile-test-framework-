@@ -1,53 +1,67 @@
 #!/bin/bash
+###########################################
+# iOS Test Runner with Allure Reporting
+# Runs iOS tests and generates Allure reports
+###########################################
 
-# Set environment variables
-export NODE_ENV=qa
-export TEST_ENV=qa
+# Source common utilities
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source "$SCRIPT_DIR/common.sh"
+
+# Set platform-specific environment variables
 export PLATFORM=ios
-export APPIUM_URL="http://localhost:4723"
+export DEVICE_NAME=${DEVICE_NAME:-"iPhone 16 Plus"}
+export PLATFORM_VERSION=${PLATFORM_VERSION:-"18.6"}
+export UDID=${UDID:-"A58EC5DC-3655-4B83-9C01-B0EC598E6A91"}
 export ALLURE_RESULTS_DIR="./allure-results"
 
+# Print the header
+log_info "Starting iOS tests with Allure reporting"
+log_info "Environment variables:"
+log_info "NODE_ENV: $NODE_ENV"
+log_info "TEST_ENV: $TEST_ENV"
+log_info "PLATFORM: $PLATFORM"
+log_info "DEVICE_NAME: $DEVICE_NAME"
+log_info "PLATFORM_VERSION: $PLATFORM_VERSION"
+log_info "APPIUM_URL: $APPIUM_URL"
+log_info "ALLURE_RESULTS_DIR: $ALLURE_RESULTS_DIR"
+
+# Print requirements
+print_platform_requirements "ios"
+
+# Clean previous Allure results
+clean_allure_results
+
 # Create directories for reports
-mkdir -p allure-results
 mkdir -p reports
 
-# Print debug information
-echo "Environment variables:"
-echo "NODE_ENV: $NODE_ENV"
-echo "TEST_ENV: $TEST_ENV"
-echo "PLATFORM: $PLATFORM"
-echo "APPIUM_URL: $APPIUM_URL"
-echo "ALLURE_RESULTS_DIR: $ALLURE_RESULTS_DIR"
-
-# Clean allure results
-echo "Cleaning previous Allure results..."
-rm -rf allure-results/*
-
 # Build the project
-echo "Building project..."
-npm run clean
-npm run build
+ensure_built
 
 # Create environment.properties file for Allure
-echo "Creating environment properties for Allure..."
+log_info "Creating environment properties for Allure..."
 cat > allure-results/environment.properties << EOF
 Platform=iOS
-DeviceName=iPhone 16 Plus
-PlatformVersion=18.6
+DeviceName=${DEVICE_NAME}
+PlatformVersion=${PLATFORM_VERSION}
 AutomationName=XCUITest
 AppiumURL=${APPIUM_URL}
 TestDate=$(date)
 Framework=TypeScript Mobile Testing Framework
 EOF
 
-# Run iOS tests with our specialized hooks
-echo "Running iOS tests with Allure reporting..."
-
 # Create a dummy allure-results directory structure if it doesn't exist
 mkdir -p allure-results/history
 
-# Run the tests
-npx cucumber-js -p ios
+# Run iOS tests with Allure formatter
+log_info "Running iOS tests with Allure reporting..."
+run_cucumber "@ios" "ios" "--format @cucumber/pretty-formatter --format allure-cucumberjs"
+
+# Store the exit code
+EXIT_CODE=$?
+
+log_info "Test execution complete!"
+exit $EXIT_CODE
 
 # Create categories for better test organization
 echo "Creating test categories for Allure..."
