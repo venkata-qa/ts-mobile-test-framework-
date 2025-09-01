@@ -6,7 +6,7 @@ Feature: SauceLabs Demo App - Mobile Testing Demo
 
   Background: 
     # This will run before each scenario
-    Given I am on the SauceLabs demo app
+    Given the app is launched
 
   @demo
   Scenario: Complete mobile demo flow

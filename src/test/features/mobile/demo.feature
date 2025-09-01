@@ -5,7 +5,7 @@ Feature: SauceLabs Demo App Login
   So that I can access the products
 
   Background:
-    Given I am on the SauceLabs demo app
+    Given the app is launched
 
   Scenario: Successful login with valid credentials
     When I type "standard_user" into the "usernameField" field in the "SauceLoginPage" page
