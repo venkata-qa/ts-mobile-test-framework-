@@ -14,7 +14,7 @@ else
 fi
 
 # Default tags
-TAGS=${1:-"@api and not @mobile and not @android and not @ios"}
+TAGS=${1:-"@questionnaire and not @mobile and not @android and not @ios"}
 
 # Set environment
 export TEST_ENV=${TEST_ENV:-"qa"}

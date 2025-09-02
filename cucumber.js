@@ -18,7 +18,11 @@ module.exports = {
       'src/test/features/**/demo.feature'
     ],
     tags: '@androiddemo',
-    format: ['progress', 'json:reports/android-report.json'],
+    format: [
+      'progress', 
+      'json:reports/android-report.json',
+      'junit:allure-results/junit.xml'
+    ],
     formatOptions: { snippetInterface: 'async-await' },
     publishQuiet: true
   },
