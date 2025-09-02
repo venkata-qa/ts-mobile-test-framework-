@@ -19,7 +19,8 @@ export class WebViewHelper {
     try {
       const contexts = await driver.getContexts();
       this.logger.info(`Available contexts: ${JSON.stringify(contexts)}`);
-      return contexts;
+      // Convert Context objects to strings
+      return contexts.map(context => String(context));
     } catch (error) {
       this.logger.error('Failed to get available contexts', error);
       throw error;
