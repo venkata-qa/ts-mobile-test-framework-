@@ -29,4 +29,4 @@ Feature: API and UI Data Comparison
     # Compare UI elements with API data using different comparison options
     Then I verify the UI element "productPrice" matches the API response "productPrice" with "tolerance" "0.01"
     And I verify the UI element "productDesc" matches the API response "productDescription" with "partialMatch" "true"
-    And I verify the UI element "productImage" attribute "src" matches the API response "data.imageUrl"
+    And I verify the UI element "productImage" attribute "src" matches the API response "data.imageUrl" on the "ProductDetailsPage" page

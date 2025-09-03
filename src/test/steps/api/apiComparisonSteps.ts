@@ -163,6 +163,7 @@ Then('I verify the UI element {string} matches the API response {string} with {s
 /**
  * Verifies that a UI element's attribute matches a value from a saved API response
  * @example I verify the UI element "productImage" attribute "src" matches the API response "product.imageUrl"
+ * @example I verify the UI element "productImage" attribute "src" matches the API response "product.imageUrl" on the "ProductPage" page
  */
 Then('I verify the UI element {string} attribute {string} matches the API response {string}', 
   async function(this: any, elementSelector: string, attributeName: string, apiResponsePath: string) {
@@ -199,6 +200,53 @@ Then('I verify the UI element {string} attribute {string} matches the API respon
     
     expect(comparison.isEqual, comparison.details || `Expected "${expectedValue}" but got "${actualValue}" for attribute "${attributeName}"`).to.be.true;
     this.log(`UI element "${elementSelector}" attribute "${attributeName}" matches API response "${apiResponsePath}"`);
+});
+
+/**
+ * Verifies that a UI element's attribute matches a value from a saved API response on a specific page
+ */
+Then('I verify the UI element {string} attribute {string} matches the API response {string} on the {string} page', 
+  async function(this: any, elementSelector: string, attributeName: string, apiResponsePath: string, pageName: string) {
+    // Parse the API response path into key and property path parts
+    const [responseKey, ...pathParts] = apiResponsePath.split('.');
+    const jsonPath = pathParts.join('.');
+    
+    // Get the saved API response
+    const savedResponse = ApiResponseStore.getResponse(responseKey);
+    if (!savedResponse) {
+      throw new Error(`No API response found with key "${responseKey}"`);
+    }
+    
+    // Get the expected value from the API response
+    const expectedValue = jsonPath ? get(savedResponse, jsonPath) : savedResponse;
+    if (expectedValue === undefined) {
+      throw new Error(`Property "${jsonPath}" not found in API response with key "${responseKey}"`);
+    }
+    
+    // Get the UI element using page object model if available
+    let element;
+    if (this.pageObjects && this.pageObjects[pageName]) {
+      element = await this.pageObjects[pageName][elementSelector];
+    } else {
+      // Fallback to direct selector
+      element = await this.browser.$(`${pageName.toLowerCase()} ${elementSelector}`);
+    }
+    
+    if (!await element.isExisting()) {
+      throw new Error(`UI element "${elementSelector}" not found on page "${pageName}"`);
+    }
+    
+    // Get the attribute value of the UI element
+    const actualValue = await element.getAttribute(attributeName);
+    
+    // Compare values with default options
+    const comparison = ComparisonUtils.compareValues(expectedValue, actualValue, {
+      trimWhitespace: true,
+      ignoreCase: true
+    });
+    
+    expect(comparison.isEqual, comparison.details || `Expected "${expectedValue}" but got "${actualValue}" for attribute "${attributeName}"`).to.be.true;
+    this.log(`UI element "${elementSelector}" attribute "${attributeName}" on page "${pageName}" matches API response "${apiResponsePath}"`);
 });
 
 /**
