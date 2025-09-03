@@ -13,9 +13,10 @@ import get from 'lodash.get';
  * @example I save the initial response for "UserProfile"
  * @example I save the API response as "userProfile"
  */
-Given('I save the initial response for {string}', function(this: any, key: string) {
-  // Assuming the last API response is stored in a known property of the world object
-  const response = this.apiResponse || this.response;
+Then('I save the initial response for {string}', function(this: any, key: string) {
+  // Assuming the last API response is stored in the TestWorld
+  // Check your world object structure to confirm the property name
+  const response = this.apiResponse || this.response || this.responseBody;
   
   if (!response) {
     throw new Error('No API response found to save. Make sure an API request was made first.');
@@ -25,9 +26,9 @@ Given('I save the initial response for {string}', function(this: any, key: strin
   this.log(`Saved API response as "${key}"`);
 });
 
-Given('I save the API response as {string}', function(this: any, key: string) {
+Then('I save the API response as {string}', function(this: any, key: string) {
   // Alias to the above step for compatibility
-  const response = this.apiResponse || this.response;
+  const response = this.apiResponse || this.response || this.responseBody;
   
   if (!response) {
     throw new Error('No API response found to save. Make sure an API request was made first.');
