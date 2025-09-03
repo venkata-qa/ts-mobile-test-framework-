@@ -36,6 +36,6 @@ fi
 echo "Running iOS tests with allure reporting..."
 npm run test:ios:allure
 
-# Generate and open the report
-echo "Generating Allure report..."
-npm run report
+echo ""
+echo "Tests completed. Allure results have been generated in the allure-results directory."
+echo "To generate and view the report, run: npm run report"

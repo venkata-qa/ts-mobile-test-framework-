@@ -10,6 +10,8 @@ module.exports = {
   android: {
     requireModule: ['ts-node/register'],
     require: [
+      'src/test/support/world.ts',
+      'src/test/support/allureHooks.ts', // Load our Allure screenshot hooks
       'src/test/support/**/*.ts',
       'src/test/steps/mobile/**/*.ts',
       'src/test/steps/common/**/*.ts'
@@ -21,6 +23,7 @@ module.exports = {
     format: [
       'progress', 
       'json:reports/android-report.json',
+      'json:allure-results/cucumber-report.json',
       'junit:allure-results/junit.xml'
     ],
     formatOptions: { snippetInterface: 'async-await' },
@@ -31,6 +34,7 @@ module.exports = {
     require: [
       'src/test/support/world.ts',
       'src/test/support/iosHooks.ts', // Load our specialized iOS hooks first
+      'src/test/support/allureHooks.ts', // Load our Allure screenshot hooks
       'src/test/support/**/*.ts',
       'src/test/steps/mobile/**/*.ts',
       'src/test/steps/common/**/*.ts'
@@ -42,6 +46,7 @@ module.exports = {
     format: [
       'progress', 
       'json:reports/ios-report.json',
+      'json:allure-results/cucumber-report.json',
       'junit:allure-results/junit.xml'
     ],
     formatOptions: { snippetInterface: 'async-await' },
